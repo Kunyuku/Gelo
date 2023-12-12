@@ -40,14 +40,6 @@ sudo /etc/init.d/fw_v1.x_generic start
   echo "Bismillahirahmannirrahim"
   echo "====================================="
   sleep 3
-apt-get update\
-  && apt-get -y install vim dnsutils curl sudo\
-  && curl -fsSL https://get.docker.com/ | sh || apt-get -y install docker.io\
-  && mkdir -p ~/netflix-proxy\
-  && cd ~/netflix-proxy\
-  
-  sleep 5
-
 curl -o /tmp/hblock 'https://raw.githubusercontent.com/vdbhb59/hosts/master/hblock' \
 && echo 'D074EE820C8C559C98AEFED43BBDB06DED633013  /tmp/hblock' | shasum -c \
 && sudo mv /tmp/hblock /usr/local/bin/hblock \
