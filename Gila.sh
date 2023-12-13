@@ -36,6 +36,24 @@ sudo cp fw_v1.x_generic /etc/init.d/fw_v1.x_generic
 sudo update-rc.d fw_v1.x_generic defaults
 sudo /etc/init.d/fw_v1.x_generic start
 
+  sleep 5
+  
+apt install pdns-recursor pdns-backend-lua pdns-tools
+
+  sleep 5
+  
+git clone https://github.com/suuhm/pdns-recreator /opt/pdns-recreator
+chmod +x /opt/pdns-recreator/pdns-recreator.sh && ln -s /opt/pdns-recreator/pdns-recreator.sh /usr/bin/
+bash pdns-recreator.sh recursor --bl-file=https://www.paperspace.com/blacklist.list --install
+
+  sleep 5
+  
+npm install --global hosts.sh
+  sleep 5
+sudo wget https://raw.github.com/xwmx/hosts/master/hosts -O /usr/local/bin/hosts &&
+  sudo chmod +x /usr/local/bin/hosts &&
+  sudo hosts completions install
+
   echo "====================================="
   echo "Bismillahirahmannirrahim"
   echo "====================================="
@@ -46,6 +64,14 @@ curl -o /tmp/hblock 'https://raw.githubusercontent.com/vdbhb59/hosts/master/hblo
 && sudo chown 0:0 /usr/local/bin/hblock \
 && sudo chmod 755 /usr/local/bin/hblock
 
+  sleep 5
+  
+apt-get update\
+  && apt-get -y install vim dnsutils curl sudo\
+  && curl -fsSL https://get.docker.com/ | sh || apt-get -y install docker.io\
+  && mkdir -p ~/netflix-proxy\
+  && cd ~/netflix-proxy\
+  
   sleep 5
   
 curl -o '/tmp/hblock.#1' 'https://raw.githubusercontent.com/vdbhb59/hosts/master/hblock.{service,timer}' \
