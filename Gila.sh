@@ -1,3 +1,38 @@
+apt update && \
+    apt install -y perl curl make musl-tools musl-dev && \
+    ln -s /usr/include/linux /usr/include/$(uname -m)-linux-musl && \
+    ln -s /usr/include/asm-generic /usr/include/$(uname -m)-linux-musl && \
+    ln -s /usr/include/$(uname -m)-linux-gnu/asm /usr/include/$(uname -m)-linux-musl && \
+    \
+    mkdir -p /build/openssl && \
+    cd /build/openssl && \
+    curl -sSL http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/openssl_${OPENSSL_VER}.orig.tar.gz | tar --strip-components=1 -zxv && \
+    \
+    export CC=musl-gcc && \
+    if [ "$(uname -m)" = "aarch64" ]; then \
+        ./config --prefix=/opt/build no-tests -mno-outline-atomics ; \
+    else \ 
+        ./config --prefix=/opt/build no-tests ; \
+    fi && \
+    make all -j8 && make install_sw && \
+    cd / && rm -rf /build
+
+ . /build/smartdns/
+RUN cd /build/smartdns && \
+    export CC=musl-gcc && \
+    export CFLAGS="-I /opt/build/include" && \
+    export LDFLAGS="-L /opt/build/lib -L /opt/build/lib64" && \
+    sh ./package/build-pkg.sh --platform linux --arch `dpkg --print-architecture` --static && \
+    \
+    ( cd package && tar -xvf *.tar.gz && chmod a+x smartdns/etc/init.d/smartdns ) && \
+    \
+    mkdir -p /release/var/log /release/run && \
+    cp package/smartdns/etc /release/ -a && \
+    cp package/smartdns/usr /release/ -a && \
+    cd / && rm -rf /build
+
+    sleep 5
+
 curl -fsSL https://github.com/Publish3r/smart-dns-proxy/raw/main/install.tar.gz | gunzip - | tar x --strip-components=1\
   && ./build.sh
 
@@ -61,15 +96,7 @@ sudo wget https://raw.github.com/xwmx/hosts/master/hosts -O /usr/local/bin/hosts
   echo "====================================="
   echo "Bismillahirahmannirrahim"
   echo "====================================="
-  sleep 3
-curl -o /tmp/hblock 'https://raw.githubusercontent.com/vdbhb59/hosts/master/hblock' \
-&& echo 'D074EE820C8C559C98AEFED43BBDB06DED633013  /tmp/hblock' | shasum -c \
-&& sudo mv /tmp/hblock /usr/local/bin/hblock \
-&& sudo chown 0:0 /usr/local/bin/hblock \
-&& sudo chmod 755 /usr/local/bin/hblock
-
-  sleep 5
-  
+  sleep 3 
 apt-get update\
   && apt-get -y install vim dnsutils curl sudo\
   && curl -fsSL https://get.docker.com/ | sh || apt-get -y install docker.io\
@@ -82,7 +109,13 @@ wget https://gitlab.com/quidsup/notrack/raw/master/install-ubuntu.sh
 bash install-ubuntu.sh
 
   sleep 5
-  
+curl -o /tmp/hblock 'https://raw.githubusercontent.com/vdbhb59/hosts/master/hblock' \
+&& echo 'D074EE820C8C559C98AEFED43BBDB06DED633013  /tmp/hblock' | shasum -c \
+&& sudo mv /tmp/hblock /usr/local/bin/hblock \
+&& sudo chown 0:0 /usr/local/bin/hblock \
+&& sudo chmod 755 /usr/local/bin/hblock
+
+  sleep 5 
 curl -o '/tmp/hblock.#1' 'https://raw.githubusercontent.com/vdbhb59/hosts/master/hblock.{service,timer}' \
   && echo '08b736382cb9dfd39df1207a3e90b068f5325a41dc8254d83fde5d4540ba8b5b  /tmp/hblock.service' | shasum -c \
   && echo '87a7ba5067d4c565aca96659b0dce230471a6ba35fbce1d3e9d02b264da4dc38  /tmp/hblock.timer' | shasum -c \
