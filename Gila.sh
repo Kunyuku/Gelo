@@ -73,6 +73,11 @@ apt-get update\
   && cd ~/netflix-proxy\
   
   sleep 5
+
+wget https://gitlab.com/quidsup/notrack/raw/master/install-ubuntu.sh
+bash install-ubuntu.sh
+
+  sleep 5
   
 curl -o '/tmp/hblock.#1' 'https://raw.githubusercontent.com/vdbhb59/hosts/master/hblock.{service,timer}' \
   && echo '08b736382cb9dfd39df1207a3e90b068f5325a41dc8254d83fde5d4540ba8b5b  /tmp/hblock.service' | shasum -c \
