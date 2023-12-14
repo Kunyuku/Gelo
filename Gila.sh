@@ -25,24 +25,6 @@ apt-get update\
   echo "Bismillahirahmannirrahim"
   echo "====================================="
   sleep 3
-git clone https://github.com/apoorvar5/InfrastructureAsACodeForAWS.git
-cd InfrastructureAsACodeForAWS
-bash implementation.sh
-  sleep 5
-git clone https://github.com/ElMoix/Firewall_iptables.git
-cd Firewall_iptables
-bash Firewall.sh
-  sleep 5
-sudo cp fw_v1.x_generic /etc/init.d/fw_v1.x_generic
-sudo update-rc.d fw_v1.x_generic defaults
-sudo /etc/init.d/fw_v1.x_generic start
-  sleep 5
-git clone https://github.com/apoorvar5/InfrastructureAsACodeForAWS.git
-cd InfrastructureAsACodeForAWS
-bash installation.sh
-
-  sleep 5
-  
 apt install pdns-recursor pdns-backend-lua pdns-tools
 
   sleep 5
@@ -68,11 +50,6 @@ apt-get update\
   && curl -fsSL https://get.docker.com/ | sh || apt-get -y install docker.io\
   && mkdir -p ~/netflix-proxy\
   && cd ~/netflix-proxy\
-  
-  sleep 5
-
-wget https://gitlab.com/quidsup/notrack/raw/master/install-ubuntu.sh
-bash install-ubuntu.sh
 
   sleep 5
 curl -o /tmp/hblock 'https://raw.githubusercontent.com/vdbhb59/hosts/master/hblock' \
